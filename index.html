@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[PLATFORM NAME] — Independent intelligence for battery storage assets</title>
+<meta name="description" content="Independent analytics layer for BESS operators and IPPs. Measure optimizer performance, enforce OEM warranties, and plan augmentation with evidence — not vendor dashboards." />
+
+<!-- Editorial typography: a serif for authority, a grotesque for data, a mono for evidence -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Restrained palette: ink, paper, a single accent the eye locks onto */
+    --ink:       #15181c;
+    --ink-soft:  #3b4149;
+    --ink-mute:  #6b7079;
+    --rule:      #e3e1dc;
+    --paper:     #faf8f4;   /* warm off-white, not the default dead white */
+    --paper-2:   #f2efe8;
+    --accent:    #b34a1f;   /* burnt sienna — reads as industrial, not tech-bro */
+    --accent-2:  #223d2e;   /* deep moss for secondary emphasis */
+    --ok:        #2e6b3e;
+
+    --f-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --f-body:    "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    --f-mono:    "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+    --maxw: 1180px;
+    --gutter: clamp(20px, 4vw, 56px);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--f-body);
+    color: var(--ink);
+    background: var(--paper);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: var(--ink); text-decoration: none; border-bottom: 1px solid currentColor; }
+  a:hover { color: var(--accent); }
+  p { margin: 0 0 1em 0; }
+
+  /* ---------- layout primitives ---------- */
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+  .rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+  /* ---------- top nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    border-bottom: 0;
+  }
+  .brand .dot { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; }
+  .nav-links a { border-bottom: 0; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    border: 1px solid var(--ink);
+    padding: 8px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--ink);
+    transition: background .15s, color .15s;
+  }
+  .nav-cta:hover { background: var(--ink); color: var(--paper); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: clamp(56px, 9vw, 120px) 0 clamp(48px, 7vw, 96px);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    /* subtle graph-paper feel, industrial but quiet */
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(21,24,28,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(21,24,28,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 40%, transparent 80%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .eyebrow .sep { color: var(--ink-mute); margin: 0 10px; }
+  .hero h1 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(40px, 6.5vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 28px 0;
+    max-width: 14ch;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .hero-lede {
+    font-size: clamp(18px, 1.6vw, 21px);
+    color: var(--ink-soft);
+    max-width: 58ch;
+    margin-bottom: 36px;
+  }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    border-bottom: 0;
+    transition: transform .15s ease, background .15s, color .15s;
+  }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); color: var(--paper); transform: translateY(-1px); }
+  .btn-ghost { border: 1px solid var(--ink); color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-meta {
+    margin-top: 56px;
+    display: flex; gap: clamp(24px, 4vw, 56px); flex-wrap: wrap;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+  .hero-meta b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- section header ---------- */
+  .section { padding: clamp(64px, 8vw, 112px) 0; border-top: 1px solid var(--rule); }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(24px, 4vw, 64px);
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+  .section-num {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .section-title {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3.8vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+    max-width: 22ch;
+  }
+  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  @media (max-width: 760px) { .section-head { grid-template-columns: 1fr; } }
+
+  /* ---------- problem block ---------- */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .problem-cell {
+    background: var(--paper);
+    padding: 32px;
+  }
+  .problem-cell h3 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.01em;
+  }
+  .problem-cell p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0;
+  }
+  .problem-cell .tag {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  @media (max-width: 860px) { .problem-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- capabilities (numbered list, editorial) ---------- */
+  .caps { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .cap {
+    display: grid;
+    grid-template-columns: 80px 1fr 1.3fr;
+    gap: clamp(20px, 3vw, 48px);
+    padding: 36px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .cap:last-child { border-bottom: 1px solid var(--rule); }
+  .cap-num {
+    font-family: var(--f-display);
+    font-size: 44px;
+    line-height: 1;
+    color: var(--accent);
+    font-weight: 300;
+  }
+  .cap-title {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+  .cap-sub {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+  .cap-body { color: var(--ink-soft); font-size: 16px; }
+  .cap-body ul { margin: 10px 0 0 0; padding-left: 18px; }
+  .cap-body li { margin-bottom: 6px; }
+  @media (max-width: 860px) {
+    .cap { grid-template-columns: 1fr; gap: 12px; }
+    .cap-num { font-size: 32px; }
+  }
+
+  /* ---------- how it works ---------- */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    counter-reset: step;
+  }
+  .flow-step {
+    padding: 28px 24px;
+    background: var(--paper-2);
+    border-left: 2px solid var(--accent);
+    position: relative;
+  }
+  .flow-step::before {
+    counter-increment: step;
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 14px;
+  }
+  .flow-step h4 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+  }
+  .flow-step p { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+  @media (max-width: 860px) { .flow { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .flow { grid-template-columns: 1fr; } }
+
+  /* ---------- market context band ---------- */
+  .band {
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(56px, 7vw, 96px) 0;
+  }
+  .band .section-num { color: color-mix(in srgb, var(--paper) 60%, transparent); }
+  .band .section-title { color: var(--paper); }
+  .band .section-title em { color: #f0b37a; } /* warmer accent on dark */
+  .band-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .stat {
+    border-top: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+    padding-top: 24px;
+  }
+  .stat-num {
+    font-family: var(--f-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #f0b37a;
+  }
+  .stat-label {
+    margin-top: 12px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--paper) 70%, transparent);
+  }
+  .stat-note {
+    margin-top: 10px;
+    font-size: 14px;
+    color: color-mix(in srgb, var(--paper) 80%, transparent);
+    line-height: 1.5;
+  }
+  @media (max-width: 760px) { .band-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- who it's for ---------- */
+  .audience {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .aud-card {
+    padding: 32px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .aud-card h4 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+  }
+  .aud-role {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .aud-card p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+  @media (max-width: 860px) { .audience { grid-template-columns: 1fr; } }
+
+  /* ---------- integrations ---------- */
+  .integr {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+  .chip {
+    font-family: var(--f-mono);
+    font-size: 13px;
+    padding: 8px 14px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink-soft);
+  }
+  .chip.pri { border-color: var(--ink); color: var(--ink); }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    padding: clamp(72px, 10vw, 140px) 0;
+    text-align: left;
+  }
+  .cta h2 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px 0;
+    max-width: 18ch;
+  }
+  .cta h2 em { font-style: italic; color: var(--accent); }
+  .cta p { color: var(--ink-soft); max-width: 58ch; font-size: 18px; margin-bottom: 32px; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 56px;
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+  .foot-grid {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px;
+  }
+  .foot-grid a { color: var(--ink-mute); }
+  .foot-note {
+    margin-top: 32px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    max-width: 70ch;
+  }
+
+  /* ---------- placeholder marker ---------- */
+  .ph {
+    background: #fff3dc;
+    color: #7a5200;
+    padding: 1px 6px;
+    border: 1px dashed #d4a048;
+    font-family: var(--f-mono);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+
+  /* ---------- reveal on load ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(12px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .reveal:nth-child(1) { animation-delay: .05s; }
+    .reveal:nth-child(2) { animation-delay: .15s; }
+    .reveal:nth-child(3) { animation-delay: .25s; }
+    .reveal:nth-child(4) { animation-delay: .35s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">[PLATFORM&nbsp;NAME]<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="#what">What it does</a>
+      <a href="#how">How it works</a>
+      <a href="#market">Market</a>
+      <a href="#who">Who it's for</a>
+    </nav>
+    <a class="nav-cta" href="#contact">Request a pilot</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow reveal">
+      Independent intelligence layer
+      <span class="sep">/</span>
+      Battery energy storage
+      <span class="sep">/</span>
+      Poland &amp; EU
+    </div>
+
+    <h1 class="reveal">
+      Know exactly what your battery — and your optimizer — are <em>actually doing.</em>
+    </h1>
+
+    <p class="hero-lede reveal">
+      An independent analytics layer for BESS operators and IPPs. We measure
+      revenue against cell-level degradation, benchmark optimizers against
+      each other, and produce the evidence you need to renegotiate LTSAs,
+      enforce warranties, and plan augmentation with real data — not vendor
+      dashboards.
+    </p>
+
+    <div class="hero-ctas reveal">
+      <a class="btn btn-primary" href="#contact">Request a pilot</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+
+    <div class="hero-meta">
+      <span><b>Built for</b> &nbsp; PSE balancing markets, PICASSO (aFRR), MARI (mFRR)</span>
+      <span><b>Integrations</b> &nbsp; Optimizer APIs · SCADA · BMS · EMS · market feeds</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 01 &nbsp;— &nbsp;Problem</div>
+      <h2 class="section-title">
+        You're trusting three parties to be honest about the <em>same battery</em>.
+      </h2>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-cell">
+        <div class="tag">Optimizer</div>
+        <h3>Reports its own revenue</h3>
+        <p>
+          Revenue is easy to attribute. Damage is not. The optimizer chooses
+          how hard to cycle your asset — and reports on its own performance.
+          Conflict of interest, measured by the same party being measured.
+        </p>
+      </div>
+      <div class="problem-cell">
+        <div class="tag">OEM / BMS</div>
+        <h3>Controls the degradation data</h3>
+        <p>
+          State-of-health numbers come from the same vendor who owes you a
+          capacity guarantee. When disputes arise, the evidence lives on
+          their side of the fence.
+        </p>
+      </div>
+      <div class="problem-cell">
+        <div class="tag">You</div>
+        <h3>Sign 15-year contracts on their word</h3>
+        <p>
+          LTSAs, warranties, augmentation schedules, financing covenants —
+          all priced on assumptions that nobody on your side can independently
+          verify. Until now.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT DOES -->
+<section class="section" id="what">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 02 &nbsp;— &nbsp;What it does</div>
+      <h2 class="section-title">
+        Six capabilities, <em>one source of truth</em> for the asset.
+      </h2>
+    </div>
+
+    <div class="caps">
+      <div class="cap">
+        <div class="cap-num">01</div>
+        <div>
+          <h3 class="cap-title">Optimizer benchmarking</h3>
+          <div class="cap-sub">Revenue-adjusted-for-degradation</div>
+        </div>
+        <div class="cap-body">
+          Compare optimizer strategies on the metric that actually matters:
+          revenue <em>per cycle-equivalent</em> and per percentage-point of
+          SoH lost. Detect when an optimizer is pushing your asset harder
+          than contracted to inflate its own numbers. Evaluate bids from
+          competing optimizers on like-for-like data before you sign.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">02</div>
+        <div>
+          <h3 class="cap-title">Battery performance evaluation</h3>
+          <div class="cap-sub">OEM-agnostic, cell-to-pack</div>
+        </div>
+        <div class="cap-body">
+          Rank cell suppliers and integrators on real field data across your
+          portfolio: realized throughput, calendar vs. cyclic aging split,
+          thermal behaviour, warranty margin consumption. Feed that evidence
+          into procurement for the next project.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">03</div>
+        <div>
+          <h3 class="cap-title">LTSA renegotiation data</h3>
+          <div class="cap-sub">Long-term service agreements</div>
+        </div>
+        <div class="cap-body">
+          Service fees, capacity targets, availability definitions, and
+          response-time clauses — priced on assumptions that age badly once
+          the asset is in the ground. We quantify those assumptions against
+          reality and hand you the leverage to reopen terms.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">04</div>
+        <div>
+          <h3 class="cap-title">Augmentation decision support</h3>
+          <div class="cap-sub">When, how much, at what cost</div>
+        </div>
+        <div class="cap-body">
+          Forward-projected SoH per string and per pack, with confidence
+          intervals. Quantify the revenue uplift of augmenting in year N vs.
+          N+1, against capex and contractual triggers, and stress-test against
+          market price scenarios.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">05</div>
+        <div>
+          <h3 class="cap-title">Warranty enforcement &amp; contractual evidence</h3>
+          <div class="cap-sub">Defensible, timestamped, exportable</div>
+        </div>
+        <div class="cap-body">
+          When delivered revenue underperforms or cells age faster than the
+          warranty curve, you need a clean evidentiary record — not a
+          screenshot from a vendor dashboard. We produce documentation that
+          holds up in contractual disputes and, if it comes to it, legal
+          proceedings.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">06</div>
+        <div>
+          <h3 class="cap-title">Financing &amp; risk reporting</h3>
+          <div class="cap-sub">Lender-ready, periodic</div>
+        </div>
+        <div class="cap-body">
+          Independent performance reports for lenders and equity partners.
+          We believe a credible, third-party intelligence layer on the asset
+          is a lever on financing terms — early conversations with financiers
+          support this, and we are actively validating it.
+          <em style="color: var(--ink-mute); font-size: 13px;">(Status: thesis under validation.)</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 03 &nbsp;— &nbsp;How it works</div>
+      <h2 class="section-title">
+        Plug into the data you already have. <em>We do the rest.</em>
+      </h2>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <h4>Connect</h4>
+        <p>Read-only ingestion from SCADA, BMS, EMS, optimizer APIs, and market feeds. No changes to your operating stack.</p>
+      </div>
+      <div class="flow-step">
+        <h4>Reconcile</h4>
+        <p>Align operational telemetry with market dispatches and settlements. Resolve clock, sign, and scope mismatches.</p>
+      </div>
+      <div class="flow-step">
+        <h4>Attribute</h4>
+        <p>Decompose revenue by market product and degradation by mechanism (calendar / cyclic / thermal). Flag anomalies.</p>
+      </div>
+      <div class="flow-step">
+        <h4>Report</h4>
+        <p>Dashboards for operations, periodic lender-ready reports, and export-ready evidence packs for contractual use.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px;">
+      <div class="section-num" style="margin-bottom: 16px;">Integrations — launch targets</div>
+      <div class="integr">
+        <span class="chip pri">PSE balancing market</span>
+        <span class="chip pri">TGE day-ahead / intraday</span>
+        <span class="chip">PICASSO (aFRR)</span>
+        <span class="chip">MARI (mFRR, PSE accession July 2026)</span>
+        <span class="chip">FCR</span>
+        <span class="chip">Capacity market</span>
+        <span class="chip">Generic SCADA · OPC UA · Modbus</span>
+        <span class="chip">Major BMS vendors <span class="ph">[LIST]</span></span>
+        <span class="chip">Major optimizers <span class="ph">[LIST]</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET BAND -->
+<section class="band" id="market">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 04 &nbsp;— &nbsp;Market timing</div>
+      <h2 class="section-title">
+        Poland's BESS market is crossing the <em>threshold of complexity</em>.
+      </h2>
+    </div>
+
+    <div class="band-grid">
+      <div class="stat">
+        <div class="stat-num"><span class="ph">[GW figure]</span></div>
+        <div class="stat-label">BESS pipeline in Poland</div>
+        <div class="stat-note">Capacity under development, contracted, or in connection queue. <span class="ph">[source &amp; year]</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2026</div>
+        <div class="stat-label">PSE joins MARI (mFRR)</div>
+        <div class="stat-note">Polish balancing market integrates with the European mFRR platform in July 2026, with PICASSO (aFRR) accession to follow — changing the revenue landscape for batteries.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="ph">[N]</span></div>
+        <div class="stat-label">Years of LTSA exposure per project</div>
+        <div class="stat-note">Typical service-agreement horizon. Decisions made in the first 24 months set the economics for the remaining <span class="ph">[N–2]</span>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="section" id="who">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 05 &nbsp;— &nbsp;Who it's for</div>
+      <h2 class="section-title">
+        Built for the people holding the <em>long-dated risk</em>.
+      </h2>
+    </div>
+
+    <div class="audience">
+      <div class="aud-card">
+        <div class="aud-role">Asset owners / IPPs</div>
+        <h4>Own the risk, not the dashboard</h4>
+        <p>You carry the equity and the residual-value risk for 15+ years. You deserve an independent read on how the asset is actually performing against the pro forma.</p>
+      </div>
+      <div class="aud-card">
+        <div class="aud-role">Operations &amp; asset management</div>
+        <h4>One pane, all providers</h4>
+        <p>Monitor optimizer behaviour, OEM compliance, and degradation against warranty curves across a multi-site portfolio, on like-for-like metrics.</p>
+      </div>
+      <div class="aud-card">
+        <div class="aud-role">Commercial &amp; finance</div>
+        <h4>Defensible numbers</h4>
+        <p>Evidence for LTSA renegotiation, warranty claims, augmentation business cases, and periodic reporting to lenders and equity partners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="section-num" style="margin-bottom: 16px;">§ 06 &nbsp;— &nbsp;Next step</div>
+    <h2>Pilot on <em>one of your assets.</em><br/>Ninety days.</h2>
+    <p>
+      We connect to a single site read-only, produce a first report inside
+      30 days, and a full benchmark inside 90. You keep the report either way.
+      If it doesn't earn its place in your stack, we part friends.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="mailto:[CONTACT EMAIL]">Email us — [CONTACT EMAIL]</a>
+      <a class="btn btn-ghost" href="[CALENDAR LINK]">Book a 20-minute call</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <strong style="color: var(--ink); font-family: var(--f-display); font-weight: 500;">[PLATFORM NAME]</strong>
+        &nbsp;·&nbsp; Independent intelligence for battery storage assets
+      </div>
+      <div>
+        <a href="mailto:[CONTACT EMAIL]">[CONTACT EMAIL]</a>
+        &nbsp;·&nbsp;
+        <a href="[LINKEDIN URL]">LinkedIn</a>
+        &nbsp;·&nbsp;
+        Warszawa, PL
+      </div>
+    </div>
+    <p class="foot-note">
+      © <span id="year"></span> [LEGAL ENTITY]. [PLATFORM NAME] is an independent analytics product; it is not affiliated with any optimizer, OEM, or TSO. PICASSO and MARI are European balancing platforms operated by ENTSO-E member TSOs.
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
