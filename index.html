@@ -154,6 +154,68 @@
   }
   .hero-meta b { color: var(--ink); font-weight: 500; }
 
+  /* ---------- architecture diagram ---------- */
+  .arch {
+    padding: clamp(56px, 7vw, 96px) 0;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .arch-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(24px, 4vw, 64px);
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+  .arch-title {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(24px, 3.2vw, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+    max-width: 24ch;
+  }
+  .arch-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .arch-svg {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    height: auto;
+  }
+  .arch-foot {
+    margin-top: 24px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    max-width: 72ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 760px) {
+    .arch-head { grid-template-columns: 1fr; }
+  }
+
+  /* staggered entry animation for the diagram groups */
+  @media (prefers-reduced-motion: no-preference) {
+    .arch-svg .a-grp {
+      opacity: 0;
+      animation: fade-rise 0.7s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    .arch-svg .a-1 { animation-delay: 0.1s; }
+    .arch-svg .a-2 { animation-delay: 0.35s; }
+    .arch-svg .a-3 { animation-delay: 0.6s; }
+    .arch-svg .a-4 { animation-delay: 0.85s; }
+    .arch-svg .a-5 { animation-delay: 1.1s; }
+    .arch-svg .a-6 { animation-delay: 1.35s; }
+    @keyframes fade-rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
   /* ---------- section header ---------- */
   .section { padding: clamp(64px, 8vw, 112px) 0; border-top: 1px solid var(--rule); }
   .section-head {
@@ -359,6 +421,81 @@
   .aud-card p { color: var(--ink-soft); font-size: 15px; margin: 0; }
   @media (max-width: 860px) { .audience { grid-template-columns: 1fr; } }
 
+  /* ---------- deploy options (two-card contrast) ---------- */
+  .deploy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+  }
+  .deploy-card {
+    padding: clamp(28px, 3.5vw, 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .deploy-card + .deploy-card {
+    border-left: 1px solid var(--rule);
+  }
+  .deploy-card.alt {
+    background: var(--paper-2);
+  }
+  .deploy-kicker {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .deploy-card h3 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: clamp(22px, 2.4vw, 28px);
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .deploy-card p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0;
+  }
+  .deploy-list {
+    list-style: none;
+    margin: 4px 0 0 0;
+    padding: 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .deploy-list li {
+    padding: 8px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .deploy-list li:last-child { border-bottom: 1px solid var(--rule); }
+  .deploy-list .k {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .deploy-foot {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  @media (max-width: 760px) {
+    .deploy { grid-template-columns: 1fr; }
+    .deploy-card + .deploy-card { border-left: 0; border-top: 1px solid var(--rule); }
+  }
+
   /* ---------- integrations ---------- */
   .integr {
     display: flex; flex-wrap: wrap; gap: 12px;
@@ -440,7 +577,9 @@
     <a class="brand" href="#top">[PLATFORM&nbsp;NAME]<span class="dot">.</span></a>
     <nav class="nav-links">
       <a href="#what">What it does</a>
+      <a href="#architecture">Architecture</a>
       <a href="#how">How it works</a>
+      <a href="#deploy">Deployment</a>
       <a href="#market">Market</a>
       <a href="#who">Who it's for</a>
     </nav>
@@ -480,6 +619,121 @@
       <span><b>Built for</b> &nbsp; PSE balancing markets, PICASSO (aFRR), MARI (mFRR)</span>
       <span><b>Integrations</b> &nbsp; Optimizer APIs · SCADA · BMS · EMS · market feeds</span>
     </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE DIAGRAM -->
+<section class="arch" id="architecture">
+  <div class="wrap">
+    <div class="arch-head">
+      <div class="section-num">Architecture</div>
+      <h2 class="arch-title">
+        We sit between the physical asset and every contractual counterparty — <em>observing the battery, answering to the owner.</em>
+      </h2>
+    </div>
+
+    <svg class="arch-svg" viewBox="0 0 680 680" role="img" style="font-family: 'Inter Tight', -apple-system, sans-serif" xmlns="http://www.w3.org/2000/svg">
+      <title>BESS physical asset linked to the intelligence layer</title>
+      <desc>Isometric hybrid renewable site on the left with the BESS highlighted. On the right: three nested constraint envelopes (OEM/LTSA, Optimiser, Revenue-stacking) containing the physical BESS, with a separate Trade desk consuming stacking recommendations. Below: a data ingestion and analytics tier, then the independent intelligence layer producing contractual evidence for procurement, LTSA, warranty, and augmentation decisions.</desc>
+      <defs>
+        <marker id="arr-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#3b4149" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="arr-sienna" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#b34a1f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="arr-moss" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#223d2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+
+      <g class="a-grp a-1">
+        <text x="20" y="28" font-size="11" fill="#6b7079" font-family="ui-monospace, 'JetBrains Mono', monospace" letter-spacing="1.2">PHYSICAL LAYER</text>
+        <text x="320" y="28" font-size="11" fill="#6b7079" font-family="ui-monospace, 'JetBrains Mono', monospace" letter-spacing="1.2">INTELLIGENCE LAYER</text>
+        <line x1="300" y1="50" x2="300" y2="640" stroke="#e3e1dc" stroke-width="0.5" stroke-dasharray="2 4"/>
+      </g>
+
+      <g class="a-grp a-2">
+        <path d="M150 90 L280 170 L150 250 L20 170 Z" fill="none" stroke="#6b7079" stroke-width="0.6" opacity="0.5"/>
+        <g stroke="#3b4149" stroke-width="0.9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="52" y1="135" x2="52" y2="175"/>
+          <path d="M52 135 L46 127"/><path d="M52 135 L60 131"/><path d="M52 135 L56 142"/>
+          <line x1="76" y1="125" x2="76" y2="168"/>
+          <path d="M76 125 L70 117"/><path d="M76 125 L84 121"/><path d="M76 125 L80 132"/>
+        </g>
+        <ellipse cx="65" cy="180" rx="30" ry="10" fill="none" stroke="#6b7079" stroke-width="0.5" opacity="0.5"/>
+        <text x="65" y="200" font-size="10" fill="#6b7079" text-anchor="middle">wind</text>
+        <g stroke="#3b4149" stroke-width="0.9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M200 120 L240 100 L280 120 L240 140 Z"/>
+          <path d="M200 120 L200 130 L240 150 L240 140"/>
+          <path d="M280 120 L280 130 L240 150"/>
+          <path d="M210 117 L250 97"/><path d="M220 113 L260 93"/>
+        </g>
+        <ellipse cx="240" cy="142" rx="52" ry="14" fill="none" stroke="#6b7079" stroke-width="0.5" opacity="0.5"/>
+        <text x="240" y="170" font-size="10" fill="#6b7079" text-anchor="middle">solar</text>
+        <ellipse cx="145" cy="212" rx="54" ry="16" fill="#fff3dc" stroke="#b34a1f" stroke-width="1.2" opacity="0.9"/>
+        <g stroke="#15181c" stroke-width="1.1" fill="#faf8f4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M120 198 L170 184 L190 194 L140 208 Z"/>
+          <path d="M120 198 L120 212 L140 222 L140 208"/>
+          <path d="M190 194 L190 208 L140 222"/>
+          <line x1="130" y1="196" x2="130" y2="210"/><line x1="145" y1="192" x2="145" y2="206"/>
+          <line x1="160" y1="188" x2="160" y2="202"/><line x1="175" y1="184" x2="175" y2="198"/>
+        </g>
+        <text x="145" y="252" font-size="11" fill="#b34a1f" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace" letter-spacing="1.2">↑ BESS</text>
+        <line x1="88" y1="175" x2="120" y2="200" stroke="#6b7079" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.7"/>
+        <line x1="208" y1="138" x2="175" y2="200" stroke="#6b7079" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.7"/>
+        <path d="M199 212 L230 212 L230 232 L266 232" fill="none" stroke="#3b4149" stroke-width="0.8" marker-end="url(#arr-ink)"/>
+        <text x="236" y="226" font-size="10" fill="#3b4149">grid</text>
+      </g>
+
+      <g class="a-grp a-3">
+        <path d="M195 206 L315 140 L320 140 L320 145 L315 145 L197 214 Z" fill="#b34a1f" opacity="0.12"/>
+        <line x1="195" y1="206" x2="315" y2="140" stroke="#b34a1f" stroke-width="0.6" stroke-dasharray="3 3"/>
+        <line x1="197" y1="214" x2="315" y2="145" stroke="#b34a1f" stroke-width="0.6" stroke-dasharray="3 3"/>
+        <circle cx="320" cy="142" r="2.5" fill="#b34a1f"/>
+        <text x="145" y="310" font-size="10" fill="#b34a1f" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace" letter-spacing="1">DETAIL →</text>
+      </g>
+
+      <g class="a-grp a-4">
+        <rect x="320" y="60" width="264" height="342" rx="10" fill="none" stroke="#223d2e" stroke-width="0.8" opacity="0.75"/>
+        <text x="336" y="82" font-size="12" fill="#223d2e" font-weight="500">OEM / LTSA constraints</text>
+        <text x="336" y="100" font-size="11" fill="#3b4149" opacity="0.85">Warranty curve · cycle limits · SoC &amp; temp bounds</text>
+        <rect x="340" y="118" width="228" height="270" rx="8" fill="none" stroke="#223d2e" stroke-width="0.6" opacity="0.65" stroke-dasharray="5 3"/>
+        <text x="356" y="140" font-size="12" fill="#223d2e" font-weight="500">Optimiser envelope</text>
+        <text x="356" y="158" font-size="11" fill="#3b4149" opacity="0.85">Dispatch within cycle / SoH / thermal bounds</text>
+        <rect x="360" y="176" width="188" height="196" rx="6" fill="none" stroke="#223d2e" stroke-width="0.5" opacity="0.55" stroke-dasharray="3 3"/>
+        <text x="376" y="198" font-size="12" fill="#223d2e" font-weight="500">Revenue-stacking layer</text>
+        <text x="376" y="216" font-size="11" fill="#3b4149" opacity="0.85">Co-optimises across markets</text>
+        <text x="376" y="232" font-size="10" fill="#6b7079" font-family="ui-monospace, monospace">DA·ID·FCR·aFRR·mFRR·CM</text>
+        <rect x="378" y="260" width="152" height="80" rx="6" fill="#faf8f4" stroke="#15181c" stroke-width="1"/>
+        <text x="454" y="296" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">BESS</text>
+        <text x="454" y="314" font-size="10" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, monospace">physical asset</text>
+        <rect x="596" y="176" width="64" height="110" rx="6" fill="#faf8f4" stroke="#223d2e" stroke-width="0.8"/>
+        <text x="628" y="226" font-size="12" fill="#223d2e" text-anchor="middle" font-weight="500">Trade</text>
+        <text x="628" y="242" font-size="12" fill="#223d2e" text-anchor="middle" font-weight="500">desk</text>
+        <path d="M548 220 L596 220" fill="none" stroke="#223d2e" stroke-width="1" marker-end="url(#arr-moss)"/>
+        <text x="572" y="212" font-size="9" fill="#223d2e" text-anchor="middle" font-family="ui-monospace, monospace">recs</text>
+        <path d="M628 286 L628 340 L548 340 L548 330" fill="none" stroke="#6b7079" stroke-width="0.5" stroke-dasharray="3 2" opacity="0.6" marker-end="url(#arr-ink)"/>
+        <text x="628" y="356" font-size="9" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, monospace">dispatch</text>
+      </g>
+
+      <g class="a-grp a-5">
+        <text x="454" y="420" font-size="10" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, monospace" letter-spacing="0.5">↓ observation</text>
+        <line x1="454" y1="432" x2="454" y2="460" stroke="#b34a1f" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr-sienna)"/>
+        <rect x="320" y="468" width="340" height="76" rx="8" fill="#faf8f4" stroke="#b34a1f" stroke-width="1" stroke-dasharray="5 3"/>
+        <text x="490" y="492" font-size="12" fill="#15181c" text-anchor="middle" font-weight="500">Data ingestion &amp; analytics</text>
+        <text x="490" y="514" font-size="10" fill="#3b4149" text-anchor="middle" font-family="ui-monospace, monospace">SCADA · BMS · market feeds · contracts</text>
+        <text x="490" y="532" font-size="10" fill="#6b7079" text-anchor="middle">reconcile · attribute · benchmark · produce evidence</text>
+        <line x1="490" y1="548" x2="490" y2="568" stroke="#b34a1f" stroke-width="1" marker-end="url(#arr-sienna)"/>
+      </g>
+
+      <g class="a-grp a-6">
+        <rect x="320" y="574" width="340" height="96" rx="10" fill="#b34a1f" stroke="#b34a1f" stroke-width="0.5"/>
+        <text x="490" y="596" font-size="14" fill="#faf8f4" text-anchor="middle" font-weight="500">Independent intelligence layer</text>
+        <text x="490" y="614" font-size="11" fill="#fff3dc" text-anchor="middle">Contractual evidence for the owner's side of the table</text>
+        <line x1="340" y1="628" x2="640" y2="628" stroke="#fff3dc" stroke-width="0.3" opacity="0.5"/>
+        <text x="370" y="646" font-size="9" fill="#fff3dc" font-family="ui-monospace, monospace">→ Procurement</text>
+        <text x="450" y="646" font-size="9" fill="#fff3dc" font-family="ui-monospace, monospace">→ LTSA</text>
+        <text x="508" y="646" font-size="9" fill="#fff3dc" font-family="ui-monospace, monospace">→ Warranty</text>
+        <text x="578" y="646" font-size="9" fill="#fff3dc" font-family="ui-monospace, monospace">→ Augmentation</text>
+      </g>
+    </svg>
+
+    <p class="arch-foot">The physical asset runs inside nested constraint envelopes set by the OEM, the optimiser, and the revenue-stacking layer. We ingest the data that vendors would rather keep to themselves — and turn it into evidence the owner's side can actually use.</p>
   </div>
 </section>
 
@@ -672,11 +926,60 @@
   </div>
 </section>
 
+<!-- DEPLOYMENT OPTIONS -->
+<section class="section" id="deploy">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">§ 04 &nbsp;— &nbsp;Deployment</div>
+      <h2 class="section-title">
+        Two ways to deploy. <em>Same intelligence layer.</em>
+      </h2>
+    </div>
+
+    <div class="deploy">
+      <div class="deploy-card">
+        <div class="deploy-kicker">Option A — Managed service</div>
+        <h3>We run the analytics layer. You receive the reports.</h3>
+        <p>
+          For asset owners and IPPs without an in-house trading or
+          quantitative function. We connect to your sites, operate the
+          pipeline, and deliver dashboards and periodic reports.
+        </p>
+        <ul class="deploy-list">
+          <li><span class="k">You get</span><span>Dashboards, monthly &amp; quarterly reports, evidence packs on request.</span></li>
+          <li><span class="k">Hosted</span><span>Our infrastructure. Read-only access to your data.</span></li>
+          <li><span class="k">Best for</span><span>Owners outsourcing optimization, IPPs monitoring external providers.</span></li>
+          <li><span class="k">Pricing</span><span><span class="ph">[per-MW / per-site subscription]</span></span></li>
+        </ul>
+        <div class="deploy-foot">Default offering — fastest to pilot.</div>
+      </div>
+
+      <div class="deploy-card alt">
+        <div class="deploy-kicker">Option B — Licensed / embedded</div>
+        <h3>You run the analytics layer. Inside your trade desk.</h3>
+        <p>
+          For utilities, IPPs, and trading houses with an in-house desk who
+          want to benchmark their own optimization results, close the loop
+          on dispatch decisions, and keep all data inside their own
+          infrastructure. Our engine, your stack.
+        </p>
+        <ul class="deploy-list">
+          <li><span class="k">You get</span><span>Analytics engine, APIs, schemas, and reference integrations. Our roadmap and updates.</span></li>
+          <li><span class="k">Hosted</span><span>Your infrastructure. Data never leaves your perimeter.</span></li>
+          <li><span class="k">Best for</span><span>In-house trade desks optimizing and benchmarking their own BESS portfolio.</span></li>
+          <li><span class="k">Pricing</span><span><span class="ph">[annual license + support tier]</span></span></li>
+        </ul>
+        <div class="deploy-foot">Longer integration cycle — strategic for desks with quant capacity.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MARKET BAND -->
 <section class="band" id="market">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-num">§ 04 &nbsp;— &nbsp;Market timing</div>
+      <div class="section-num">§ 05 &nbsp;— &nbsp;Market timing</div>
       <h2 class="section-title">
         Poland's BESS market is crossing the <em>threshold of complexity</em>.
       </h2>
@@ -706,7 +1009,7 @@
 <section class="section" id="who">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-num">§ 05 &nbsp;— &nbsp;Who it's for</div>
+      <div class="section-num">§ 06 &nbsp;— &nbsp;Who it's for</div>
       <h2 class="section-title">
         Built for the people holding the <em>long-dated risk</em>.
       </h2>
@@ -735,12 +1038,14 @@
 <!-- CTA -->
 <section class="cta" id="contact">
   <div class="wrap">
-    <div class="section-num" style="margin-bottom: 16px;">§ 06 &nbsp;— &nbsp;Next step</div>
-    <h2>Pilot on <em>one of your assets.</em><br/>Ninety days.</h2>
+    <div class="section-num" style="margin-bottom: 16px;">§ 07 &nbsp;— &nbsp;Next step</div>
+    <h2>Pilot on <em>one of your assets.</em><br/>Or evaluate the engine <em>on your desk.</em></h2>
     <p>
-      We connect to a single site read-only, produce a first report inside
-      30 days, and a full benchmark inside 90. You keep the report either way.
-      If it doesn't earn its place in your stack, we part friends.
+      Managed service: we connect to a single site read-only, produce a
+      first report inside 30 days, a full benchmark inside 90. You keep the
+      report either way. Licensed engine: we run a technical deep-dive with
+      your desk, scope integration with your data, and agree on an evaluation
+      window. Either path, if it doesn't earn its place, we part friends.
     </p>
     <div class="hero-ctas">
       <a class="btn btn-primary" href="mailto:[CONTACT EMAIL]">Email us — [CONTACT EMAIL]</a>
