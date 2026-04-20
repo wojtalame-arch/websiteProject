@@ -174,73 +174,68 @@
   }
   .prob-trigger:hover { background: var(--accent); color: var(--paper); }
 
-  .modal-backdrop {
+  /* ---------- overlay views (full-screen in-page) ---------- */
+  .view-main { display: block; }
+  .view-main.hidden { display: none; }
+
+  .overlay-view {
+    display: none;
     position: fixed;
     inset: 0;
-    background: rgba(21, 24, 28, 0.72);
-    display: none;
-    align-items: flex-start;
-    justify-content: center;
+    background: var(--paper);
     z-index: 100;
     overflow-y: auto;
-    padding: 48px 24px;
+    padding: clamp(56px, 7vw, 96px) 0 clamp(48px, 6vw, 80px);
   }
-  .modal-backdrop.open { display: flex; }
-  .modal-box {
-    background: var(--paper);
-    max-width: 860px;
-    width: 100%;
-    padding: clamp(32px, 5vw, 56px);
-    position: relative;
-    border: 1px solid var(--rule);
-  }
-  .modal-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    cursor: pointer;
+  .overlay-view.open { display: block; }
+
+  .overlay-back {
+    display: inline-block;
     font-family: var(--f-mono);
-    font-size: 16px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
     color: var(--ink-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-bottom: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--rule);
+    margin-bottom: clamp(32px, 4vw, 56px);
+    cursor: pointer;
+    background: transparent;
     transition: background .15s, color .15s, border-color .15s;
   }
-  .modal-close:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .modal-eyebrow {
+  .overlay-back:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .overlay-eyebrow {
     font-family: var(--f-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
-  .modal-title {
+  .overlay-title {
     font-family: var(--f-display);
     font-weight: 400;
-    font-size: clamp(24px, 3vw, 36px);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    margin: 0 0 12px 0;
-    max-width: 26ch;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px 0;
+    max-width: 22ch;
   }
-  .modal-title em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .modal-lede {
+  .overlay-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .overlay-lede {
     color: var(--ink-soft);
-    font-size: 15px;
+    font-size: 17px;
     max-width: 64ch;
-    margin: 0 0 36px 0;
+    margin: 0 0 clamp(40px, 5vw, 64px) 0;
+    line-height: 1.55;
   }
-  .modal-divider {
+  .overlay-divider {
     border: 0;
     border-top: 1px solid var(--rule);
-    margin: 40px 0 32px;
+    margin: clamp(48px, 6vw, 72px) 0 clamp(32px, 4vw, 48px);
   }
+
   .wedge-row {
     display: grid;
     grid-template-columns: 180px 1fr 100px;
@@ -349,48 +344,101 @@
     .wedge-value { text-align: left; }
   }
 
-  /* ---------- architecture diagram ---------- */
-  .arch {
-    padding: clamp(56px, 7vw, 96px) 0;
+  /* ---------- optimiser scaffold blocks ---------- */
+  .scaffold-block {
+    padding: clamp(24px, 3vw, 36px) 0;
     border-top: 1px solid var(--rule);
+  }
+  .scaffold-block:last-of-type { border-bottom: 1px solid var(--rule); }
+  .scaffold-num {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .scaffold-title {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: clamp(20px, 2.6vw, 28px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px 0;
+  }
+  .scaffold-body {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 68ch;
+    line-height: 1.6;
+  }
+  .scaffold-placeholder {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    background: #fff3dc;
+    color: #7a5200;
+    border: 1px dashed #d4a048;
+    padding: 6px 12px;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* trigger link inside capability cards */
+  .cap-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+    cursor: pointer;
+    background: transparent;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .cap-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* ---------- architecture diagram (bridge, not section) ---------- */
+  .arch {
+    padding: clamp(32px, 4vw, 56px) 0 clamp(16px, 2vw, 32px);
     background: var(--paper);
   }
-  .arch-head {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: clamp(24px, 4vw, 64px);
-    margin-bottom: clamp(32px, 4vw, 48px);
+  .arch-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+    text-align: center;
   }
-  .arch-title {
+  .arch-intro {
+    font-family: var(--f-body);
+    font-size: 15px;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 68ch;
+    margin: 0 auto clamp(20px, 3vw, 32px);
+    line-height: 1.55;
+  }
+  .arch-intro em {
     font-family: var(--f-display);
+    font-style: italic;
+    color: var(--accent);
     font-weight: 400;
-    font-size: clamp(24px, 3.2vw, 36px);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    margin: 0;
-    max-width: 24ch;
   }
-  .arch-title em { font-style: italic; color: var(--accent); font-weight: 400; }
   .arch-svg {
     display: block;
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
     height: auto;
-  }
-  .arch-foot {
-    margin-top: 24px;
-    font-family: var(--f-mono);
-    font-size: 12px;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    text-align: center;
-    max-width: 72ch;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  @media (max-width: 760px) {
-    .arch-head { grid-template-columns: 1fr; }
   }
 
   /* staggered entry animation for the diagram groups */
@@ -766,6 +814,8 @@
 </head>
 <body>
 
+<div class="view-main" id="view-main">
+
 <!-- NAV -->
 <header class="nav">
   <div class="wrap nav-inner">
@@ -800,13 +850,13 @@
       An independent analytics layer for BESS operators and IPPs. We measure
       revenue against BESS asset degradation, produce the evidence to
       renegotiate LTSAs, enforce warranties, plan augmentation, benchmark
-      optimizers against revenue and asset lifetime with real data — not
+      optimisers against revenue and asset lifetime with real data — not
       vendor dashboards.
     </p>
 
     <div class="hero-meta">
       <span><b>Built for</b> &nbsp; PSE balancing markets, PICASSO (aFRR), MARI (mFRR)</span>
-      <span><b>Integrations</b> &nbsp; Optimizer APIs · SCADA · BMS · EMS · market feeds</span>
+      <span><b>Integrations</b> &nbsp; Optimiser APIs · SCADA · BMS · EMS · market feeds</span>
     </div>
   </div>
 </section>
@@ -814,12 +864,10 @@
 <!-- ARCHITECTURE DIAGRAM -->
 <section class="arch" id="architecture">
   <div class="wrap">
-    <div class="arch-head">
-      <div class="section-num">Architecture</div>
-      <h2 class="arch-title">
-        We sit between the physical asset and every contractual counterparty — <em>observing the battery, answering to the owner.</em>
-      </h2>
-    </div>
+    <div class="arch-eyebrow">Architecture</div>
+    <p class="arch-intro">
+      We sit between the physical asset and every contractual counterparty — <em>observing the battery, answering to the owner.</em>
+    </p>
 
     <svg class="arch-svg" viewBox="0 0 680 680" role="img" style="font-family: 'Inter Tight', -apple-system, sans-serif" xmlns="http://www.w3.org/2000/svg">
       <title>BESS physical asset linked to the intelligence layer</title>
@@ -921,8 +969,6 @@
         <text x="578" y="646" font-size="9" fill="#fff3dc" font-family="ui-monospace, monospace">→ Augmentation</text>
       </g>
     </svg>
-
-    <p class="arch-foot">The physical asset runs inside nested constraint envelopes set by the OEM, the optimiser, and the revenue-stacking layer. We ingest the data that vendors would rather keep to themselves — and turn it into evidence the owner's side can actually use.</p>
   </div>
 </section>
 
@@ -967,7 +1013,7 @@
     </div>
 
     <div class="prob-trigger-wrap">
-      <button class="prob-trigger" onclick="document.getElementById('size-modal').classList.add('open'); document.body.style.overflow='hidden';">See the size of the problem →</button>
+      <button class="prob-trigger" data-overlay="view-size">See the size of the problem →</button>
     </div>
   </div>
 </section>
@@ -1028,15 +1074,16 @@
       <div class="cap">
         <div class="cap-num">04</div>
         <div>
-          <h3 class="cap-title">Optimizer benchmarking</h3>
+          <h3 class="cap-title">Optimiser benchmarking</h3>
           <div class="cap-sub">Revenue-adjusted-for-degradation</div>
         </div>
         <div class="cap-body">
-          Compare optimizer strategies on the metric that actually matters:
+          Compare optimiser strategies on the metric that actually matters:
           revenue <em>per cycle-equivalent</em> and per percentage-point of
-          SoH lost. Detect when an optimizer is pushing your asset harder
+          SoH lost. Detect when an optimiser is pushing your asset harder
           than contracted to inflate its own numbers. Evaluate bids from
-          competing optimizers on like-for-like data before you sign.
+          competing optimisers on like-for-like data before you sign.
+          <div><button class="cap-link" data-overlay="view-optimiser">Technical details →</button></div>
         </div>
       </div>
 
@@ -1086,7 +1133,7 @@
     <div class="flow">
       <div class="flow-step">
         <h4>Connect</h4>
-        <p>Read-only ingestion from SCADA, BMS, EMS, optimizer APIs, and market feeds.</p>
+        <p>Read-only ingestion from SCADA, BMS, EMS, optimiser APIs, and market feeds.</p>
       </div>
       <div class="flow-step">
         <h4>Reconcile</h4>
@@ -1113,7 +1160,7 @@
         <span class="chip">Capacity market</span>
         <span class="chip">Generic SCADA · OPC UA · Modbus</span>
         <span class="chip">Major BMS vendors <span class="ph">[LIST]</span></span>
-        <span class="chip">Major optimizers <span class="ph">[LIST]</span></span>
+        <span class="chip">Major optimisers <span class="ph">[LIST]</span></span>
       </div>
     </div>
   </div>
@@ -1141,7 +1188,7 @@
         <ul class="deploy-list">
           <li><span class="k">You get</span><span>Dashboards, monthly &amp; quarterly reports, evidence packs on request.</span></li>
           <li><span class="k">Hosted</span><span>Our infrastructure. Read-only access to your data.</span></li>
-          <li><span class="k">Best for</span><span>Owners outsourcing optimization, IPPs monitoring external providers.</span></li>
+          <li><span class="k">Best for</span><span>Owners outsourcing optimisation, IPPs monitoring external providers.</span></li>
           <li><span class="k">Pricing</span><span><span class="ph">[per-MW / per-site subscription]</span></span></li>
         </ul>
         <div class="deploy-foot">Default offering — fastest to pilot.</div>
@@ -1152,14 +1199,14 @@
         <h3>You run the analytics layer. Inside your trade desk.</h3>
         <p>
           For utilities, IPPs, and trading houses with an in-house desk who
-          want to benchmark their own optimization results, close the loop
+          want to benchmark their own optimisation results, close the loop
           on dispatch decisions, and keep all data inside their own
           infrastructure. Our engine, your stack.
         </p>
         <ul class="deploy-list">
           <li><span class="k">You get</span><span>Analytics engine, APIs, schemas, and reference integrations. Our roadmap and updates.</span></li>
           <li><span class="k">Hosted</span><span>Your infrastructure. Data never leaves your perimeter.</span></li>
-          <li><span class="k">Best for</span><span>In-house trade desks optimizing and benchmarking their own BESS portfolio.</span></li>
+          <li><span class="k">Best for</span><span>In-house trade desks optimising and benchmarking their own BESS portfolio.</span></li>
           <li><span class="k">Pricing</span><span><span class="ph">[annual license + support tier]</span></span></li>
         </ul>
         <div class="deploy-foot">Longer integration cycle — strategic for desks with quant capacity.</div>
@@ -1217,7 +1264,7 @@
       <div class="aud-card">
         <div class="aud-role">Operations &amp; asset management</div>
         <h4>One pane, all providers</h4>
-        <p>Monitor optimizer behaviour, OEM compliance, and degradation against warranty curves across a multi-site portfolio, on like-for-like metrics.</p>
+        <p>Monitor optimiser behaviour, OEM compliance, and degradation against warranty curves across a multi-site portfolio, on like-for-like metrics.</p>
       </div>
       <div class="aud-card">
         <div class="aud-role">Commercial &amp; finance</div>
@@ -1245,27 +1292,25 @@
       </div>
     </div>
     <p class="foot-note">
-      © <span id="year"></span> [LEGAL ENTITY]. [PLATFORM NAME] is an independent analytics product; it is not affiliated with any optimizer, OEM, or TSO. PICASSO and MARI are European balancing platforms operated by ENTSO-E member TSOs.
+      © <span id="year"></span> [LEGAL ENTITY]. [PLATFORM NAME] is an independent analytics product; it is not affiliated with any optimiser, OEM, or TSO. PICASSO and MARI are European balancing platforms operated by ENTSO-E member TSOs.
     </p>
   </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+</div>
+<!-- /view-main -->
 
-<!-- SIZE OF THE PROBLEM — MODAL -->
-<div class="modal-backdrop" id="size-modal" onclick="if(event.target===this){this.classList.remove('open');document.body.style.overflow='';}">
-  <div class="modal-box">
-    <button class="modal-close" onclick="document.getElementById('size-modal').classList.remove('open');document.body.style.overflow='';" aria-label="Close">×</button>
+<!-- OVERLAY: SIZE OF THE PROBLEM -->
+<section class="overlay-view" id="view-size" aria-hidden="true">
+  <div class="wrap">
+    <button class="overlay-back" onclick="closeOverlay()">← Back to main</button>
 
-    <div class="modal-eyebrow">Size of the problem</div>
-    <h2 class="modal-title">How much value is actually at stake — <em>per published benchmarks.</em></h2>
-    <p class="modal-lede">
+    <div class="overlay-eyebrow">Size of the problem</div>
+    <h2 class="overlay-title">How much value is actually at stake — <em>per published benchmarks.</em></h2>
+    <p class="overlay-lede">
       Ranges below come from public industry benchmarks, not our own measurements. Each wedge names an inefficiency category the intelligence layer is designed to quantify on a per-asset basis. Wedges marked <em>qualitative</em> are directional — the literature supports them, but no single clean numerical benchmark exists.
     </p>
 
-    <!-- Wedge 1: Optimiser underperformance -->
     <div class="wedge-row">
       <div class="wedge-label">Optimiser underperformance</div>
       <div class="wedge-bar-track">
@@ -1276,7 +1321,6 @@
       <div class="wedge-source">Modo Energy, GB H1 2025: top performers earned ~£100k/MW/yr vs fleet average ~£69k/MW/yr on similar or lower cycling. Spread between operators is structural, not stochastic.</div>
     </div>
 
-    <!-- Wedge 2: Hidden degradation cost -->
     <div class="wedge-row">
       <div class="wedge-label">Hidden degradation cost</div>
       <div class="wedge-bar-track">
@@ -1287,7 +1331,6 @@
       <div class="wedge-source">Yagci et al., J. Energy Storage 2025: stationary 180 Ah LFP cells, capacity fade roughly doubles from 35 °C to 50 °C over 1,500 cycles. Thermal management off-spec compounds silently against the warranty curve.</div>
     </div>
 
-    <!-- Wedge 3: Warranty margin unused (qualitative) -->
     <div class="wedge-row qualitative">
       <div class="wedge-label">Warranty margin unused</div>
       <div class="wedge-bar-track"></div>
@@ -1295,7 +1338,6 @@
       <div class="wedge-source">OEM warranty curves are set with commercially motivated margin above physics-bounded degradation. Literature on per-cell degradation modelling (Sarasketa-Zabala, Naumann, Wang et al.) gives the method; the size of the gap is asset-specific and only measurable per-site.</div>
     </div>
 
-    <!-- Wedge 4: Augmentation mistiming (qualitative) -->
     <div class="wedge-row qualitative">
       <div class="wedge-label">Augmentation mistiming</div>
       <div class="wedge-bar-track"></div>
@@ -1303,12 +1345,11 @@
       <div class="wedge-source">Augmentation timing decisions are priced on forward-SoH assumptions made at contracting. A one-year shift in timing moves capex-equivalent value by material amounts for a 15–20 year merchant asset; the exact figure depends on project economics and market price trajectory.</div>
     </div>
 
-    <hr class="modal-divider" />
+    <hr class="overlay-divider" />
 
     <div class="example-block">
       <h4>Worked example — 100 MW / 200 MWh merchant BESS, Germany</h4>
       <div class="example-sub">Illustrative, derived from the cited benchmarks above. Not a customer result.</div>
-
       <div class="example-line">
         <div class="lbl">Theoretical gross revenue, 20-year life</div>
         <div class="val">~€400M</div>
@@ -1329,25 +1370,146 @@
         <div class="lbl">LTSA margin renegotiable (30% of typical opex)</div>
         <div class="val">~€20M</div>
       </div>
-
       <p class="example-caveat">
         Figures use 2024 peak German BESS revenue as the theoretical ceiling, which is compressing as more batteries enter the market; 2025 revenues are already lower. The optimiser-gap figure is derived from the GB market, where public per-asset data exists — Polish market structure (more capacity-market anchored) differs. Ranges for the first two wedges are citable; the last two are qualitative pending per-asset measurement. This example is a worked illustration of the literature applied to a notional asset, not a projection for any specific project.
       </p>
     </div>
 
   </div>
-</div>
+</section>
+
+<!-- OVERLAY: OPTIMISER (technical deep-dive, scaffold) -->
+<section class="overlay-view" id="view-optimiser" aria-hidden="true">
+  <div class="wrap">
+    <button class="overlay-back" onclick="closeOverlay()">← Back to main</button>
+
+    <div class="overlay-eyebrow">Optimiser — technical deep-dive</div>
+    <h2 class="overlay-title">How we <em>measure what an optimiser is actually doing.</em></h2>
+    <p class="overlay-lede">
+      Benchmarking an optimiser means comparing its dispatch decisions against counterfactual baselines, decomposing the realised P&amp;L against degradation accrued, and attributing both to specific strategy choices. This page describes the method — the model families we benchmark against, the research we draw on, the metrics we report, and the limitations we own.
+    </p>
+
+    <div class="scaffold-block">
+      <div class="scaffold-num">§ A &nbsp;— &nbsp;What an optimiser actually does</div>
+      <h3 class="scaffold-title">Dispatch under uncertainty, with degradation as a shadow cost.</h3>
+      <div class="scaffold-body">
+        An optimiser solves a sequential decision problem: given forecasts of prices across multiple markets (DA, ID, FCR, aFRR, mFRR, capacity), forecasts of asset state (SoC, SoH, thermal), and a contractual envelope (cycle limits, depth-of-discharge caps, warranty curve), choose a dispatch trajectory that maximises expected revenue while respecting the envelope. Different optimisers make different choices about which markets to stack, how aggressively to deplete cycle budget, how to handle forecast uncertainty, and how to price degradation as an endogenous cost.
+        <div class="scaffold-placeholder">[TO WRITE: formal statement of the MILP / stochastic control formulation]</div>
+      </div>
+    </div>
+
+    <div class="scaffold-block">
+      <div class="scaffold-num">§ B &nbsp;— &nbsp;Model families we benchmark against</div>
+      <h3 class="scaffold-title">Perfect-foresight LP, rolling-horizon MPC, learned policies.</h3>
+      <div class="scaffold-body">
+        Three reference policies bracket what is theoretically achievable and what is practically achievable on the same asset with the same market conditions.
+        <div class="scaffold-placeholder">[TO WRITE: PFC LP formulation, rolling MPC with forecast-error sensitivity, RL/DRL family, tabular comparison]</div>
+      </div>
+    </div>
+
+    <div class="scaffold-block">
+      <div class="scaffold-num">§ C &nbsp;— &nbsp;Published research we draw on</div>
+      <h3 class="scaffold-title">Cycle-life modelling, co-optimisation, merchant dispatch.</h3>
+      <div class="scaffold-body">
+        The degradation-aware dispatch problem has an established academic literature. Our method draws on cell-level ageing models (Sarasketa-Zabala, Naumann, Wang, Yagci), co-optimisation under uncertainty (Kumar, Morales, Conejo), and empirical revenue benchmarking (Modo Energy, Aurora Research).
+        <div class="scaffold-placeholder">[TO WRITE: annotated reading list with one-line summary per reference]</div>
+      </div>
+    </div>
+
+    <div class="scaffold-block">
+      <div class="scaffold-num">§ D &nbsp;— &nbsp;Our benchmark metrics</div>
+      <h3 class="scaffold-title">Revenue per cycle-equivalent, SoH-adjusted NPV, envelope violations.</h3>
+      <div class="scaffold-body">
+        We report three primary metrics and a battery of secondary diagnostics. Primary metrics are designed to be comparable across assets of different size, chemistry, and market exposure.
+        <div class="scaffold-placeholder">[TO WRITE: metric definitions with mathematical statement, interpretation, and what each detects]</div>
+      </div>
+    </div>
+
+    <div class="scaffold-block">
+      <div class="scaffold-num">§ E &nbsp;— &nbsp;Limitations</div>
+      <h3 class="scaffold-title">What benchmarking cannot tell you.</h3>
+      <div class="scaffold-body">
+        Honest boundaries of the method: counterfactual baselines are themselves models; degradation attribution has irreducible uncertainty below certain thresholds; market regime changes make historical benchmarks stale; some optimiser strategies are only distinguishable over long time horizons.
+        <div class="scaffold-placeholder">[TO WRITE: specific failure modes and how we communicate uncertainty in reports]</div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Overlay routing: fragment-based, with back-button support
+  function openOverlay(id) {
+    document.querySelectorAll('.overlay-view').forEach(v => {
+      v.classList.remove('open');
+      v.setAttribute('aria-hidden', 'true');
+    });
+    var target = document.getElementById(id);
+    if (!target) return;
+    target.classList.add('open');
+    target.setAttribute('aria-hidden', 'false');
+    document.getElementById('view-main').classList.add('hidden');
+    document.body.style.overflow = 'hidden';
+    target.scrollTop = 0;
+  }
+
+  function closeOverlay() {
+    document.querySelectorAll('.overlay-view').forEach(v => {
+      v.classList.remove('open');
+      v.setAttribute('aria-hidden', 'true');
+    });
+    document.getElementById('view-main').classList.remove('hidden');
+    document.body.style.overflow = '';
+    if (location.hash) {
+      history.pushState('', document.title, window.location.pathname + window.location.search);
+    }
+  }
+
+  function routeFromHash() {
+    var h = window.location.hash;
+    if (h === '#view-size') {
+      openOverlay('view-size');
+    } else if (h === '#view-optimiser') {
+      openOverlay('view-optimiser');
+    } else {
+      // Any other hash (section anchor) or no hash — close overlays, let normal anchor behaviour run
+      document.querySelectorAll('.overlay-view').forEach(v => {
+        v.classList.remove('open');
+        v.setAttribute('aria-hidden', 'true');
+      });
+      document.getElementById('view-main').classList.remove('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Wire up triggers that should open an overlay by setting the hash
+  document.querySelectorAll('[data-overlay]').forEach(el => {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = this.getAttribute('data-overlay');
+      history.pushState(null, '', '#' + target);
+      openOverlay(target);
+    });
+  });
+
+  // Back-button returns through hash changes
+  window.addEventListener('popstate', routeFromHash);
+  window.addEventListener('hashchange', routeFromHash);
+
+  // Escape key closes any open overlay
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      var m = document.getElementById('size-modal');
-      if (m && m.classList.contains('open')) {
-        m.classList.remove('open');
-        document.body.style.overflow = '';
+      var open = document.querySelector('.overlay-view.open');
+      if (open) {
+        history.back();
       }
     }
   });
+
+  // Initial route (if user lands with #view-size already in URL)
+  routeFromHash();
 </script>
 
 </body>
