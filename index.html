@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>[PLATFORM NAME] — Independent intelligence for battery storage assets</title>
-<meta name="description" content="Independent analytics layer for BESS operators and IPPs. Measure optimizer performance, enforce OEM warranties, and plan augmentation with evidence — not vendor dashboards." />
+<meta name="description" content="An independent analytics layer that sits between your BESS portfolio and the counterparties that price, operate, and service it. Verifies performance against the assumptions written into every contract." />
 
 <!-- Editorial typography: a serif for authority, a grotesque for data, a mono for evidence -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,11 +113,11 @@
   .hero h1 {
     font-family: var(--f-display);
     font-weight: 400;
-    font-size: clamp(40px, 6.5vw, 80px);
-    line-height: 1.02;
+    font-size: clamp(34px, 5.2vw, 64px);
+    line-height: 1.08;
     letter-spacing: -0.02em;
     margin: 0 0 28px 0;
-    max-width: 14ch;
+    max-width: 22ch;
   }
   .hero h1 em {
     font-style: italic;
@@ -153,6 +153,201 @@
     letter-spacing: 0.04em;
   }
   .hero-meta b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- size-of-problem modal trigger & overlay ---------- */
+  .prob-trigger-wrap {
+    margin-top: clamp(32px, 4vw, 48px);
+    text-align: center;
+  }
+  .prob-trigger {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    padding: 10px 18px;
+    border: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+    background: transparent;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .prob-trigger:hover { background: var(--accent); color: var(--paper); }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(21, 24, 28, 0.72);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 100;
+    overflow-y: auto;
+    padding: 48px 24px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-box {
+    background: var(--paper);
+    max-width: 860px;
+    width: 100%;
+    padding: clamp(32px, 5vw, 56px);
+    position: relative;
+    border: 1px solid var(--rule);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    font-family: var(--f-mono);
+    font-size: 16px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .modal-close:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .modal-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .modal-title {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px 0;
+    max-width: 26ch;
+  }
+  .modal-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .modal-lede {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 64ch;
+    margin: 0 0 36px 0;
+  }
+  .modal-divider {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 40px 0 32px;
+  }
+  .wedge-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 100px;
+    gap: 20px;
+    align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .wedge-row:last-child { border-bottom: 1px solid var(--rule); }
+  .wedge-label {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+  }
+  .wedge-bar-track {
+    height: 20px;
+    background: var(--paper-2);
+    position: relative;
+    border: 1px solid var(--rule);
+  }
+  .wedge-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: var(--accent);
+    opacity: 0.85;
+  }
+  .wedge-bar-range {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  .wedge-value {
+    font-family: var(--f-mono);
+    font-size: 13px;
+    color: var(--ink);
+    text-align: right;
+    font-weight: 500;
+  }
+  .wedge-source {
+    grid-column: 1 / -1;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+    margin-top: 4px;
+    padding-left: 0;
+  }
+  .wedge-qual {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .wedge-row.qualitative .wedge-bar-track { background: repeating-linear-gradient(45deg, var(--paper-2) 0, var(--paper-2) 6px, var(--paper) 6px, var(--paper) 12px); }
+
+  .example-block {
+    background: var(--paper-2);
+    border-left: 2px solid var(--accent);
+    padding: 24px 28px;
+    margin-top: 8px;
+  }
+  .example-block h4 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0 0 8px 0;
+  }
+  .example-block .example-sub {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .example-line {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .example-line:first-of-type { border-top: 0; }
+  .example-line .lbl { color: var(--ink-soft); }
+  .example-line .val {
+    font-family: var(--f-mono);
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .example-line.emph .val { color: var(--accent); }
+  .example-caveat {
+    margin-top: 20px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+  @media (max-width: 600px) {
+    .wedge-row { grid-template-columns: 1fr; gap: 6px; }
+    .wedge-value { text-align: left; }
+  }
 
   /* ---------- architecture diagram ---------- */
   .arch {
@@ -583,7 +778,6 @@
       <a href="#market">Market</a>
       <a href="#who">Who it's for</a>
     </nav>
-    <a class="nav-cta" href="#contact">Request a pilot</a>
   </div>
 </header>
 
@@ -599,21 +793,16 @@
     </div>
 
     <h1 class="reveal">
-      Know exactly what your battery — and your optimizer — are <em>actually doing.</em>
+      BESS portfolios are priced, contracted, and financed on assumptions. <em>Performance, verified independently, is leverage.</em>
     </h1>
 
     <p class="hero-lede reveal">
       An independent analytics layer for BESS operators and IPPs. We measure
-      revenue against cell-level degradation, benchmark optimizers against
-      each other, and produce the evidence you need to renegotiate LTSAs,
-      enforce warranties, and plan augmentation with real data — not vendor
-      dashboards.
+      revenue against BESS asset degradation, produce the evidence to
+      renegotiate LTSAs, enforce warranties, plan augmentation, benchmark
+      optimizers against revenue and asset lifetime with real data — not
+      vendor dashboards.
     </p>
-
-    <div class="hero-ctas reveal">
-      <a class="btn btn-primary" href="#contact">Request a pilot</a>
-      <a class="btn btn-ghost" href="#how">See how it works</a>
-    </div>
 
     <div class="hero-meta">
       <span><b>Built for</b> &nbsp; PSE balancing markets, PICASSO (aFRR), MARI (mFRR)</span>
@@ -743,16 +932,16 @@
     <div class="section-head">
       <div class="section-num">§ 01 &nbsp;— &nbsp;Problem</div>
       <h2 class="section-title">
-        You're trusting three parties to be honest about the <em>same battery</em>.
+        The data about your battery flows through parties who <em>benefit from how it's read</em>.
       </h2>
     </div>
 
     <div class="problem-grid">
       <div class="problem-cell">
-        <div class="tag">Optimizer</div>
+        <div class="tag">Trader</div>
         <h3>Reports its own revenue</h3>
         <p>
-          Revenue is easy to attribute. Damage is not. The optimizer chooses
+          Revenue is easy to attribute. Damage is not. The trader chooses
           how hard to cycle your asset — and reports on its own performance.
           Conflict of interest, measured by the same party being measured.
         </p>
@@ -767,14 +956,18 @@
         </p>
       </div>
       <div class="problem-cell">
-        <div class="tag">You</div>
-        <h3>Sign 15-year contracts on their word</h3>
+        <div class="tag">Consequence</div>
+        <h3>15–20 year obligations priced on their word</h3>
         <p>
           LTSAs, warranties, augmentation schedules, financing covenants —
           all priced on assumptions that nobody on your side can independently
           verify. Until now.
         </p>
       </div>
+    </div>
+
+    <div class="prob-trigger-wrap">
+      <button class="prob-trigger" onclick="document.getElementById('size-modal').classList.add('open'); document.body.style.overflow='hidden';">See the size of the problem →</button>
     </div>
   </div>
 </section>
@@ -793,23 +986,8 @@
       <div class="cap">
         <div class="cap-num">01</div>
         <div>
-          <h3 class="cap-title">Optimizer benchmarking</h3>
-          <div class="cap-sub">Revenue-adjusted-for-degradation</div>
-        </div>
-        <div class="cap-body">
-          Compare optimizer strategies on the metric that actually matters:
-          revenue <em>per cycle-equivalent</em> and per percentage-point of
-          SoH lost. Detect when an optimizer is pushing your asset harder
-          than contracted to inflate its own numbers. Evaluate bids from
-          competing optimizers on like-for-like data before you sign.
-        </div>
-      </div>
-
-      <div class="cap">
-        <div class="cap-num">02</div>
-        <div>
-          <h3 class="cap-title">Battery performance evaluation</h3>
-          <div class="cap-sub">OEM-agnostic, cell-to-pack</div>
+          <h3 class="cap-title">Manufacturer benchmarking</h3>
+          <div class="cap-sub">Across your portfolio, across vendors</div>
         </div>
         <div class="cap-body">
           Rank cell suppliers and integrators on real field data across your
@@ -820,7 +998,7 @@
       </div>
 
       <div class="cap">
-        <div class="cap-num">03</div>
+        <div class="cap-num">02</div>
         <div>
           <h3 class="cap-title">LTSA renegotiation data</h3>
           <div class="cap-sub">Long-term service agreements</div>
@@ -834,7 +1012,7 @@
       </div>
 
       <div class="cap">
-        <div class="cap-num">04</div>
+        <div class="cap-num">03</div>
         <div>
           <h3 class="cap-title">Augmentation decision support</h3>
           <div class="cap-sub">When, how much, at what cost</div>
@@ -844,6 +1022,21 @@
           intervals. Quantify the revenue uplift of augmenting in year N vs.
           N+1, against capex and contractual triggers, and stress-test against
           market price scenarios.
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="cap-num">04</div>
+        <div>
+          <h3 class="cap-title">Optimizer benchmarking</h3>
+          <div class="cap-sub">Revenue-adjusted-for-degradation</div>
+        </div>
+        <div class="cap-body">
+          Compare optimizer strategies on the metric that actually matters:
+          revenue <em>per cycle-equivalent</em> and per percentage-point of
+          SoH lost. Detect when an optimizer is pushing your asset harder
+          than contracted to inflate its own numbers. Evaluate bids from
+          competing optimizers on like-for-like data before you sign.
         </div>
       </div>
 
@@ -886,14 +1079,14 @@
     <div class="section-head">
       <div class="section-num">§ 03 &nbsp;— &nbsp;How it works</div>
       <h2 class="section-title">
-        Plug into the data you already have. <em>We do the rest.</em>
+        From raw signals to <em>contractual evidence</em>, in four steps.
       </h2>
     </div>
 
     <div class="flow">
       <div class="flow-step">
         <h4>Connect</h4>
-        <p>Read-only ingestion from SCADA, BMS, EMS, optimizer APIs, and market feeds. No changes to your operating stack.</p>
+        <p>Read-only ingestion from SCADA, BMS, EMS, optimizer APIs, and market feeds.</p>
       </div>
       <div class="flow-step">
         <h4>Reconcile</h4>
@@ -1035,25 +1228,6 @@
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta" id="contact">
-  <div class="wrap">
-    <div class="section-num" style="margin-bottom: 16px;">§ 07 &nbsp;— &nbsp;Next step</div>
-    <h2>Pilot on <em>one of your assets.</em><br/>Or evaluate the engine <em>on your desk.</em></h2>
-    <p>
-      Managed service: we connect to a single site read-only, produce a
-      first report inside 30 days, a full benchmark inside 90. You keep the
-      report either way. Licensed engine: we run a technical deep-dive with
-      your desk, scope integration with your data, and agree on an evaluation
-      window. Either path, if it doesn't earn its place, we part friends.
-    </p>
-    <div class="hero-ctas">
-      <a class="btn btn-primary" href="mailto:[CONTACT EMAIL]">Email us — [CONTACT EMAIL]</a>
-      <a class="btn btn-ghost" href="[CALENDAR LINK]">Book a 20-minute call</a>
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <div class="wrap">
@@ -1078,6 +1252,102 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+<!-- SIZE OF THE PROBLEM — MODAL -->
+<div class="modal-backdrop" id="size-modal" onclick="if(event.target===this){this.classList.remove('open');document.body.style.overflow='';}">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('size-modal').classList.remove('open');document.body.style.overflow='';" aria-label="Close">×</button>
+
+    <div class="modal-eyebrow">Size of the problem</div>
+    <h2 class="modal-title">How much value is actually at stake — <em>per published benchmarks.</em></h2>
+    <p class="modal-lede">
+      Ranges below come from public industry benchmarks, not our own measurements. Each wedge names an inefficiency category the intelligence layer is designed to quantify on a per-asset basis. Wedges marked <em>qualitative</em> are directional — the literature supports them, but no single clean numerical benchmark exists.
+    </p>
+
+    <!-- Wedge 1: Optimiser underperformance -->
+    <div class="wedge-row">
+      <div class="wedge-label">Optimiser underperformance</div>
+      <div class="wedge-bar-track">
+        <div class="wedge-bar-range" style="left: 0; width: 45%;"></div>
+        <div class="wedge-bar-fill" style="left: 0; width: 30%;"></div>
+      </div>
+      <div class="wedge-value">30–45%</div>
+      <div class="wedge-source">Modo Energy, GB H1 2025: top performers earned ~£100k/MW/yr vs fleet average ~£69k/MW/yr on similar or lower cycling. Spread between operators is structural, not stochastic.</div>
+    </div>
+
+    <!-- Wedge 2: Hidden degradation cost -->
+    <div class="wedge-row">
+      <div class="wedge-label">Hidden degradation cost</div>
+      <div class="wedge-bar-track">
+        <div class="wedge-bar-range" style="left: 0; width: 60%;"></div>
+        <div class="wedge-bar-fill" style="left: 0; width: 50%;"></div>
+      </div>
+      <div class="wedge-value">up to 2×</div>
+      <div class="wedge-source">Yagci et al., J. Energy Storage 2025: stationary 180 Ah LFP cells, capacity fade roughly doubles from 35 °C to 50 °C over 1,500 cycles. Thermal management off-spec compounds silently against the warranty curve.</div>
+    </div>
+
+    <!-- Wedge 3: Warranty margin unused (qualitative) -->
+    <div class="wedge-row qualitative">
+      <div class="wedge-label">Warranty margin unused</div>
+      <div class="wedge-bar-track"></div>
+      <div class="wedge-value wedge-qual">qualitative</div>
+      <div class="wedge-source">OEM warranty curves are set with commercially motivated margin above physics-bounded degradation. Literature on per-cell degradation modelling (Sarasketa-Zabala, Naumann, Wang et al.) gives the method; the size of the gap is asset-specific and only measurable per-site.</div>
+    </div>
+
+    <!-- Wedge 4: Augmentation mistiming (qualitative) -->
+    <div class="wedge-row qualitative">
+      <div class="wedge-label">Augmentation mistiming</div>
+      <div class="wedge-bar-track"></div>
+      <div class="wedge-value wedge-qual">qualitative</div>
+      <div class="wedge-source">Augmentation timing decisions are priced on forward-SoH assumptions made at contracting. A one-year shift in timing moves capex-equivalent value by material amounts for a 15–20 year merchant asset; the exact figure depends on project economics and market price trajectory.</div>
+    </div>
+
+    <hr class="modal-divider" />
+
+    <div class="example-block">
+      <h4>Worked example — 100 MW / 200 MWh merchant BESS, Germany</h4>
+      <div class="example-sub">Illustrative, derived from the cited benchmarks above. Not a customer result.</div>
+
+      <div class="example-line">
+        <div class="lbl">Theoretical gross revenue, 20-year life</div>
+        <div class="val">~€400M</div>
+      </div>
+      <div class="example-line">
+        <div class="lbl">&nbsp;&nbsp;&nbsp;↳ at €200k/MW/yr cross-optimised benchmark</div>
+        <div class="val">Modo, 2024</div>
+      </div>
+      <div class="example-line emph">
+        <div class="lbl">Optimiser performance gap (30% wedge)</div>
+        <div class="val">~€120M</div>
+      </div>
+      <div class="example-line emph">
+        <div class="lbl">Early-augmentation risk from thermal mismanagement</div>
+        <div class="val">~€15–25M</div>
+      </div>
+      <div class="example-line emph">
+        <div class="lbl">LTSA margin renegotiable (30% of typical opex)</div>
+        <div class="val">~€20M</div>
+      </div>
+
+      <p class="example-caveat">
+        Figures use 2024 peak German BESS revenue as the theoretical ceiling, which is compressing as more batteries enter the market; 2025 revenues are already lower. The optimiser-gap figure is derived from the GB market, where public per-asset data exists — Polish market structure (more capacity-market anchored) differs. Ranges for the first two wedges are citable; the last two are qualitative pending per-asset measurement. This example is a worked illustration of the literature applied to a notional asset, not a projection for any specific project.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var m = document.getElementById('size-modal');
+      if (m && m.classList.contains('open')) {
+        m.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+  });
 </script>
 
 </body>
