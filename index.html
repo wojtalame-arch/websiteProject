@@ -459,6 +459,50 @@
     }
   }
 
+  /* ---------- animated energy & data flow ---------- */
+  .eflow {
+    padding: clamp(40px, 5vw, 72px) 0 clamp(24px, 3vw, 48px);
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .eflow-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .eflow-svg {
+    display: block;
+    width: 100%;
+    min-width: 760px;      /* below this, allow horizontal scroll instead of shrinking text */
+    max-width: 1040px;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  /* line semantics: power (sienna, solid-flow), data (moss, dotted), control (ink, dashed) */
+  .f-power { stroke: var(--accent); stroke-width: 2.2; fill: none; stroke-dasharray: 7 7; stroke-linecap: round; }
+  .f-data  { stroke: var(--accent-2); stroke-width: 1.2; fill: none; stroke-dasharray: 2 6; stroke-linecap: round; }
+  .f-ctl   { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; stroke-linecap: round; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .f-power { animation: dash-14 0.9s linear infinite; }
+    .f-data  { animation: dash-8  1.0s linear infinite; }
+    .f-ctl   { animation: dash-9  1.4s linear infinite; }
+    /* dash period == offset ⇒ seamless loop */
+    @keyframes dash-14 { to { stroke-dashoffset: -14; } }
+    @keyframes dash-8  { to { stroke-dashoffset: -8;  } }
+    @keyframes dash-9  { to { stroke-dashoffset: -9;  } }
+
+    .eflow-svg .f-grp {
+      opacity: 0;
+      animation: fade-rise 0.7s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    .eflow-svg .fg-1 { animation-delay: 0.05s; }
+    .eflow-svg .fg-2 { animation-delay: 0.25s; }
+    .eflow-svg .fg-3 { animation-delay: 0.45s; }
+    .eflow-svg .fg-4 { animation-delay: 0.65s; }
+    .eflow-svg .fg-5 { animation-delay: 0.85s; }
+  }
+  /* JS adds .is-off when scrolled out of view, .rm when reduced motion is set */
+  .eflow-svg.is-off, .eflow-svg.is-off * { animation-play-state: paused; }
+  .eflow-svg.rm .eflow-dot { display: none; }
+
   /* ---------- section header ---------- */
   .section { padding: clamp(64px, 8vw, 112px) 0; border-top: 1px solid var(--rule); }
   .section-head {
@@ -1010,6 +1054,127 @@
     <div class="hero-meta">
       <span><b>Built for</b> &nbsp; PSE balancing markets, PICASSO (aFRR), MARI (mFRR)</span>
       <span><b>Integrations</b> &nbsp; Optimiser APIs · SCADA · BMS · EMS · market feeds</span>
+    </div>
+  </div>
+</section>
+
+<!-- ANIMATED ENERGY & DATA FLOW -->
+<section class="eflow" id="eflow">
+  <div class="wrap">
+    <div class="arch-eyebrow">Energy &amp; data flow</div>
+    <p class="arch-intro">
+      Megawatts move left to right. Telemetry moves down into the platform — <em>and comes back out as constraints, forecasts, and bid envelopes.</em>
+    </p>
+    <div class="eflow-scroll">
+      <svg class="eflow-svg" id="flow-svg" viewBox="0 0 960 500" role="img" style="font-family: 'Inter Tight', -apple-system, sans-serif" xmlns="http://www.w3.org/2000/svg">
+        <title>Energy and data flow through the platform</title>
+        <desc>Wind and PV farms feed a BESS, which charges and discharges against the grid. The BMS streams cell telemetry into the battery intelligence platform, whose AI physics models produce state-of-health, degradation, thermal, and dispatch-feasibility outputs. These feed the EMS, which sends setpoints back to the BESS, and the trader, which sends bids and schedules to the market.</desc>
+        <defs>
+          <marker id="fw-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#3b4149" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="fw-sienna" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#b34a1f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="fw-moss" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#223d2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+
+        <!-- 1 · generation -->
+        <g class="f-grp fg-1">
+          <rect x="40" y="78" width="150" height="60" rx="6" fill="#faf8f4" stroke="#3b4149" stroke-width="0.9"/>
+          <text x="115" y="103" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">Wind farm</text>
+          <text x="115" y="121" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">MW · intermittent</text>
+          <rect x="40" y="162" width="150" height="60" rx="6" fill="#faf8f4" stroke="#3b4149" stroke-width="0.9"/>
+          <text x="115" y="187" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">PV farm</text>
+          <text x="115" y="205" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">MW · diurnal</text>
+          <path id="p-wind"  class="f-power" d="M190 108 H300" marker-end="url(#fw-sienna)"/>
+          <path id="p-solar" class="f-power" d="M190 192 H300" marker-end="url(#fw-sienna)"/>
+          <circle class="eflow-dot" r="2.6" fill="#b34a1f"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#p-wind"/></animateMotion></circle>
+          <circle class="eflow-dot" r="2.6" fill="#b34a1f"><animateMotion dur="2.2s" begin="-0.8s" repeatCount="indefinite"><mpath href="#p-solar"/></animateMotion></circle>
+        </g>
+
+        <!-- 2 · BESS + BMS + grid + power line -->
+        <g class="f-grp fg-2">
+          <rect x="300" y="70" width="170" height="150" rx="8" fill="#fff3dc" stroke="#b34a1f" stroke-width="1.2"/>
+          <text x="385" y="102" font-size="14" fill="#15181c" text-anchor="middle" font-weight="500">BESS</text>
+          <text x="385" y="120" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">physical asset</text>
+          <g stroke="#b34a1f" stroke-width="0.8" opacity="0.55">
+            <line x1="322" y1="140" x2="322" y2="196"/><line x1="346" y1="140" x2="346" y2="196"/>
+            <line x1="370" y1="140" x2="370" y2="196"/><line x1="394" y1="140" x2="394" y2="196"/>
+            <line x1="418" y1="140" x2="418" y2="196"/><line x1="442" y1="140" x2="442" y2="196"/>
+          </g>
+          <line x1="385" y1="220" x2="385" y2="232" stroke="#3b4149" stroke-width="0.8"/>
+          <rect x="300" y="232" width="170" height="34" rx="6" fill="#faf8f4" stroke="#223d2e" stroke-width="0.9"/>
+          <text x="385" y="253" font-size="11.5" fill="#223d2e" text-anchor="middle" font-weight="500">BMS <tspan font-size="9" fill="#6b7079" font-weight="400">· cell telemetry</tspan></text>
+
+          <rect x="790" y="86" width="130" height="74" rx="6" fill="#faf8f4" stroke="#3b4149" stroke-width="0.9"/>
+          <text x="855" y="117" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">Grid</text>
+          <text x="855" y="135" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">TSO · markets</text>
+
+          <path id="p-grid" class="f-power" d="M470 145 H790" marker-end="url(#fw-sienna)" marker-start="url(#fw-sienna)"/>
+          <text x="630" y="132" font-size="9" fill="#b34a1f" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">charge ⇄ discharge</text>
+          <text x="630" y="164" font-size="9" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">FCR · aFRR · wholesale</text>
+          <circle class="eflow-dot" r="3.2" fill="#b34a1f"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#p-grid"/></animateMotion></circle>
+          <circle class="eflow-dot" r="3.2" fill="#b34a1f"><animateMotion dur="3s" begin="-1.5s" repeatCount="indefinite"><mpath href="#p-grid"/></animateMotion></circle>
+        </g>
+
+        <!-- 3 · telemetry into the platform -->
+        <g class="f-grp fg-3">
+          <path id="d-bms" class="f-data" d="M385 266 V330" marker-end="url(#fw-moss)"/>
+          <text x="395" y="302" font-size="9" fill="#223d2e" font-family="ui-monospace, 'JetBrains Mono', monospace">telemetry</text>
+          <circle class="eflow-dot" r="2.2" fill="#223d2e"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#d-bms"/></animateMotion></circle>
+          <circle class="eflow-dot" r="2.2" fill="#223d2e"><animateMotion dur="1.6s" begin="-0.8s" repeatCount="indefinite"><mpath href="#d-bms"/></animateMotion></circle>
+
+          <rect x="250" y="330" width="400" height="150" rx="10" fill="#b34a1f"/>
+          <text x="450" y="358" font-size="14" fill="#faf8f4" text-anchor="middle" font-weight="500">Battery intelligence platform</text>
+          <text x="450" y="376" font-size="10" fill="#fff3dc" text-anchor="middle">AI physics models, running continuously on live telemetry</text>
+          <g fill="none" stroke="#fff3dc" stroke-width="0.6" opacity="0.9">
+            <rect x="270" y="392" width="180" height="34" rx="5"/>
+            <rect x="460" y="392" width="172" height="34" rx="5"/>
+            <rect x="270" y="434" width="180" height="34" rx="5"/>
+            <rect x="460" y="434" width="172" height="34" rx="5"/>
+          </g>
+          <g font-size="9.5" fill="#fff3dc" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">
+            <text x="360" y="413">Electrochemical SoH</text>
+            <text x="546" y="413">Degradation forecast</text>
+            <text x="360" y="455">Thermal &amp; safety</text>
+            <text x="546" y="455">Dispatch feasibility</text>
+          </g>
+        </g>
+
+        <!-- 4 · EMS + trader -->
+        <g class="f-grp fg-4">
+          <rect x="720" y="330" width="170" height="60" rx="6" fill="#faf8f4" stroke="#3b4149" stroke-width="0.9"/>
+          <text x="805" y="355" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">EMS</text>
+          <text x="805" y="373" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">dispatch &amp; control</text>
+          <rect x="720" y="420" width="170" height="60" rx="6" fill="#faf8f4" stroke="#3b4149" stroke-width="0.9"/>
+          <text x="805" y="445" font-size="13" fill="#15181c" text-anchor="middle" font-weight="500">Trader</text>
+          <text x="805" y="463" font-size="9.5" fill="#6b7079" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">bids · portfolio</text>
+
+          <path id="d-ems" class="f-data" d="M650 360 H720" marker-end="url(#fw-moss)"/>
+          <text x="685" y="350" font-size="8.5" fill="#223d2e" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">constraints</text>
+          <path id="d-trd" class="f-data" d="M650 450 H720" marker-end="url(#fw-moss)"/>
+          <text x="685" y="440" font-size="8.5" fill="#223d2e" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">envelopes</text>
+          <circle class="eflow-dot" r="2.2" fill="#223d2e"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#d-ems"/></animateMotion></circle>
+          <circle class="eflow-dot" r="2.2" fill="#223d2e"><animateMotion dur="1.4s" begin="-0.5s" repeatCount="indefinite"><mpath href="#d-trd"/></animateMotion></circle>
+        </g>
+
+        <!-- 5 · control loop back + bids to market + legend -->
+        <g class="f-grp fg-5">
+          <path id="c-set" class="f-ctl" d="M805 330 V190 H470" marker-end="url(#fw-ink)"/>
+          <text x="640" y="204" font-size="9" fill="#3b4149" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">setpoints</text>
+          <circle class="eflow-dot" r="2.2" fill="#3b4149"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#c-set"/></animateMotion></circle>
+
+          <path id="d-bid" class="f-data" d="M890 450 H905 V160" marker-end="url(#fw-moss)"/>
+          <text transform="rotate(-90 916 300)" x="916" y="300" font-size="8.5" fill="#223d2e" text-anchor="middle" font-family="ui-monospace, 'JetBrains Mono', monospace">bids · schedules</text>
+          <circle class="eflow-dot" r="2.2" fill="#223d2e"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#d-bid"/></animateMotion></circle>
+
+          <g font-size="10" fill="#6b7079" font-family="ui-monospace, 'JetBrains Mono', monospace">
+            <line x1="40" y1="336" x2="88" y2="336" class="f-power" style="animation: none"/>
+            <text x="98" y="340">power (MW)</text>
+            <line x1="40" y1="366" x2="88" y2="366" class="f-data" style="animation: none"/>
+            <text x="98" y="370">data / telemetry</text>
+            <line x1="40" y1="396" x2="88" y2="396" class="f-ctl" style="animation: none"/>
+            <text x="98" y="400">control setpoints</text>
+          </g>
+        </g>
+      </svg>
     </div>
   </div>
 </section>
@@ -1976,6 +2141,28 @@
       if (open) history.back();
     }
   });
+
+  // ========== FLOW DIAGRAM: motion hygiene ==========
+  // SMIL <animateMotion> ignores CSS prefers-reduced-motion, so pause it in JS;
+  // also pause everything while the diagram is off-screen (CPU/battery courtesy).
+  (function () {
+    var svg = document.getElementById('flow-svg');
+    if (!svg || typeof svg.pauseAnimations !== 'function') return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduced.matches) {
+      svg.pauseAnimations();
+      svg.classList.add('rm');   // hides the moving dots (frozen dots look like bugs)
+      return;
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { svg.unpauseAnimations(); svg.classList.remove('is-off'); }
+          else { svg.pauseAnimations(); svg.classList.add('is-off'); }
+        });
+      }, { threshold: 0.05 }).observe(svg);
+    }
+  })();
 
   // Initial route
   routeFromHash();
