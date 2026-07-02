@@ -112,7 +112,7 @@
   }
 
   /* ---------- hero ---------- */
-  .hero { position: relative; overflow: hidden; padding: clamp(48px, 7vw, 92px) 0 clamp(24px, 3vw, 40px); background: transparent; color: var(--ink); }
+  .hero { position: relative; overflow: hidden; isolation: isolate; padding: clamp(48px, 7vw, 92px) 0 clamp(24px, 3vw, 40px); background: transparent; color: var(--ink); }
   .hero::after {
     content: ""; position: absolute; inset: 0;
     background-image:
@@ -123,6 +123,21 @@
     pointer-events: none;
   }
   .hero > .wrap { position: relative; z-index: 1; }
+
+  /* ---------- hero background video ---------- */
+  .hero-bg { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-scrim { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,18,24,0.95) 0%, rgba(11,18,24,0.78) 46%, rgba(11,18,24,0.34) 100%),
+      linear-gradient(to top, rgba(11,18,24,0.88) 0%, rgba(11,18,24,0.10) 48%); }
+  .hero-replay { position: absolute; right: clamp(16px, 4vw, 44px); top: 50%; transform: translateY(-50%);
+    z-index: 2; display: none; place-items: center; width: 60px; height: 60px; border-radius: 50%;
+    border: 1px solid var(--petrol-bright); background: color-mix(in srgb, var(--g950) 70%, transparent);
+    backdrop-filter: blur(6px); color: var(--petrol-bright); cursor: pointer;
+    transition: transform .12s, background .15s; }
+  .hero-replay.show { display: grid; }
+  .hero-replay:hover { transform: translateY(-50%) scale(1.06); background: color-mix(in srgb, var(--g950) 55%, transparent); }
+  .hero-replay svg { width: 22px; height: 22px; margin-left: 3px; fill: currentColor; }
   .hero-eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.18em; color: var(--petrol-bright); text-transform: uppercase; margin-bottom: 18px; }
   h1 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(34px, 5.6vw, 62px); line-height: 1.06; margin: 0 0 18px; max-width: 22ch; }
   h1 .hl { color: var(--amber-bright); }
@@ -431,6 +446,13 @@
 
 <!-- HERO -->
 <header class="hero grain" id="top">
+  <video class="hero-bg" autoplay muted playsinline preload="auto" aria-label="Background video">
+    <source src="hero-video.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-scrim"></div>
+  <button class="hero-replay" type="button" aria-label="Replay video">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+  </button>
   <div class="wrap">
     <div class="hero-eyebrow">Software-defined · Self-pricing · Critical infrastructure</div>
     <h1>Sovereign <span class="hl">sodium-ion</span> battery energy storage</h1>
@@ -1735,6 +1757,24 @@
     na.setAttribute('aria-pressed', e==='na'?'true':'false');
     lfp.setAttribute('aria-pressed', e==='lfp'?'true':'false'); }
   na.onclick=function(){set('na');}; lfp.onclick=function(){set('lfp');};
+})();
+</script>
+
+<!-- hero video: reveal replay button after it finishes; replay on click -->
+<script>
+(function () {
+  var v = document.querySelector('.hero-bg');
+  var btn = document.querySelector('.hero-replay');
+  if (!v || !btn) return;
+  v.addEventListener('ended', function () { btn.classList.add('show'); });
+  btn.addEventListener('click', function () {
+    btn.classList.remove('show');
+    v.currentTime = 0;
+    v.play();
+  });
+  // If the browser blocks muted autoplay, surface the button so the clip stays reachable.
+  var p = v.play();
+  if (p && typeof p.catch === 'function') { p.catch(function () { btn.classList.add('show'); }); }
 })();
 </script>
 </body>
