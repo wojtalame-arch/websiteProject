@@ -125,10 +125,10 @@
   .hero > .wrap { position: relative; z-index: 1; }
 
   /* ---------- hero background video ---------- */
-  .hero-bg { position: absolute; left: 0; right: 0; z-index: 0; width: 100%;
-    height: 122%;            /* >100% zooms OUT — more of the scene shows; raise to zoom out further */
-    top: -16%;               /* more negative = video sits HIGHER in frame */
-    object-fit: cover; object-position: center; }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%;
+    object-fit: contain;     /* show the WHOLE frame — fully zoomed out */
+    object-position: center top;
+    background: var(--g950); /* dark fills any gaps (left/right if narrow, or top/bottom) */ }
   .hero-scrim { position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background:
       /* lower band goes dark so the simulation diagram is legible; video stays behind the headline up top */
