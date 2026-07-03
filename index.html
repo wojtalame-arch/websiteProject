@@ -205,6 +205,8 @@
   .chip b { color: var(--petrol); font-weight: 500; }
   .callout { margin-top: 28px; border-left: 3px solid var(--amber); background: var(--amber-tint); border-radius: 0 6px 6px 0; padding: 16px 20px; max-width: 78ch; font-size: 14px; color: var(--ink-soft); }
   .callout b { color: var(--amber-bright); }
+  .callout p { margin: 0 0 0.7em; }
+  .callout p:last-child { margin-bottom: 0; }
 
   /* ---------- product split ---------- */
   .halves { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
@@ -629,16 +631,17 @@
 <section class="sec tint" id="problem">
   <div class="wrap">
     <div class="eyebrow">The problem</div>
-    <h2 class="title">Every battery ages differently.<br/>Every trade prices it the same.</h2>
+    <h2 class="title">Every battery ages differently in time,<br/>and yet every trade prices it the same.</h2>
     <p class="lede">
-      An accurate wear cost needs deep electrochemistry and computation fast enough for trading cadence.
+      An accurate wear cost of a BESS requires a deep physical and electrochemical understanding of underlying degradation mechanisms coupled with environmental dependencies and computation fast enough for trading cadence.
       Most desks fall back to static, Li-ion-trained heuristics — wrong chemistry, wrong price.
     </p>
+    <div class="vsline">EVERY DISPATCH DECISION — € for the kWh sold now &nbsp;vs&nbsp; € of battery life consumed. Sharper wear cost → better trades → lower LCOS.</div>
     <div class="split">
       <div class="pcard">
         <span class="tag">BESS owner</span>
         <h3>Maximises lifetime profit</h3>
-        <p>Horizon: 10–20 years. Every unpriced cycle is battery life given away below its replacement cost.</p>
+        <p>Horizon: 10–20 years. However a profitable trade and unprofitable trade look identical. Unpriced, every cycle's true cost stays invisible.</p>
       </div>
       <div class="pcard">
         <span class="tag">Trader</span>
@@ -646,16 +649,15 @@
         <p>Horizon: the contract. With a fixed wear proxy, the rational bid erodes the asset it trades on.</p>
       </div>
     </div>
-    <div class="vsline">EVERY DISPATCH DECISION — € for the kWh sold now &nbsp;vs&nbsp; € of battery life consumed. Sharper wear cost → better trades → lower LCOS.</div>
     <div class="chiprow">
       <span class="chip"><b>30–50%</b> of lifetime profit forfeited by a mismatched static wear price — even with a perfect ageing model (Kumtepeli et al., 2024)</span>
-      <span class="chip"><b>3</b> chemistry families in grid BESS today — LFP · NMC · Na-ion</span>
-      <span class="chip"><b>3,000–12,000+</b> claimed cycle life across cell SKUs</span>
     </div>
     <div class="callout">
-      <b>Category forming.</b> Analytics and trading firms are pairing up — volytica × enspired (Jan 2025) — but each hands the
-      trader a static wear cost or a fixed operating envelope. Nobody streams a live, open, forward-looking degradation price.
-      That valuation layer is open — we fill it.
+      <p><b>Category forming.</b> Axpo and Entrix now offer BESS asset optimisation, but this creates a conflict of interest — traders optimise for revenue, often at the expense of long-term asset health.</p>
+      <p>Analytics and trading firms are increasingly partnering — for example, volytica and enspired (January 2025) — yet they still typically provide only static wear costs or fixed operating envelopes.</p>
+      <p>Independent providers such as ACCURE and TWAICE offer unbiased wear assessment and trading insights. However, they require deep SCADA integration, and their effectiveness is limited by restricted signals from standard BMS systems and incomplete cell degradation data.</p>
+      <p>As a BESS manufacturer with our own full technology stack — including advanced BMS, careful cell selection, and deep proprietary degradation modelling — we have superior real-time visibility and control. We succeed when our batteries deliver strong revenue and last longer.</p>
+      <p>No one provides a live, open, forward-looking degradation price. We close that gap.</p>
     </div>
   </div>
 </section>
@@ -675,7 +677,7 @@
       <a class="half sw" href="#software">
         <span class="k">02 / SOFTWARE</span>
         <h3>Battery intelligence layer</h3>
-        <p>Pack-level digital twin, real-time cost-of-cycle API for traders, and the DFN physics core that powers both.</p>
+        <p>Pack-level digital twin, ML anomaly detection for optimised service response, real-time cost-of-cycle API for traders. Powered by a physics-based AI core.</p>
         <span class="go">Explore software ↓</span>
       </a>
     </div>
@@ -683,9 +685,9 @@
 </section>
 
 <!-- PRODUCT BAND (real render) -->
-<section class="band" id="build">
+<section class="band" id="hardware">
   <div class="band-inner">
-    <div class="band-eyebrow">Hardware — What we build</div>
+    <div class="band-eyebrow">Hardware</div>
     <h2>Sovereign Na-ion storage, engineered for the field.</h2>
     <p>From C&amp;I cabinets to utility-scale containers &mdash; liquid-cooled, cold-climate-proven, running our battery-intelligence layer from day one.</p>
 
@@ -699,8 +701,8 @@
         <div class="cap">300 kWh · behind-the-meter &amp; critical load</div>
         <ul>
           <li>300 kWh-class Na-ion cabinet for factories, warehouses, critical loads and data centers</li>
-          <li>Liquid-cooled modules with per-module telemetry into the digital twin</li>
-          <li>Same module, BMS and EMS stack as the utility container</li>
+          <li>1500 V DC architecture</li>
+          <li>Liquid-cooled thermal system</li>
         </ul>
       </div>
       <div class="prod">
@@ -709,17 +711,11 @@
         <div class="cap">3 MWh · 20 ft · utility-scale</div>
         <ul>
           <li>3 MWh-class Na-ion container for utility fleets and hybrid plants</li>
-          <li>1500 V DC block, liquid-cooled thermal system, grid-forming ready EMS</li>
-          <li>Scales the identical module — one supply chain, one service model</li>
+          <li>1500 V DC architecture</li>
+          <li>Liquid-cooled thermal system</li>
         </ul>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- HARDWARE -->
-<section class="sec" id="hardware">
-  <div class="wrap">
     <div class="pack3d" id="pack3d">
       <div class="pack3d-stage">
         <canvas id="pack3d-canvas"></canvas>
@@ -755,13 +751,6 @@
         </div>
       </div>
       <div class="pack3d-fallback">3D pack viewer needs WebGL — the product photos in &ldquo;What we build&rdquo; above show both products.</div>
-    </div>
-
-    <div class="specstrip">
-      <span class="spec">1500 V DC architecture</span>
-      <span class="spec">Liquid-cooled thermal system</span>
-      <span class="spec">One module design across both products</span>
-      <span class="spec">Cells: multi-vendor Na-ion — CATL · HiNa</span>
     </div>
   </div>
 </section>
